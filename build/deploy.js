@@ -21,6 +21,13 @@ const AT_PHONE = '+86-15815549880'
 // 需要at的列表
 const AT_PHONE_LIST = ['15917033340', '15815549880']
 
+// 运行这个文件的默认参数 可被deploy覆盖
+let deployOptions = {
+  target: 'production',
+  send: true,
+  branch: 'build',
+}
+
 // 钉钉api 封装
 class DingTalk {
   _axios = null
@@ -147,7 +154,8 @@ function dateFormat(fmt, date) {
   return fmt
 }
 
-async function deploy() {
+async function deploy(options = {}) {
+  deployOptions = { ...deployOptions, ...options }
   const { env } = await inquirer.prompt([
     {
       name: 'env',
@@ -197,7 +205,9 @@ async function deploy() {
 
       await execShPromise('git fetch')
       flog('tag：', tag)
-      sendDingTalk(env, tag, message)
+      if (deployOptions.send) {
+        sendDingTalk(env, tag, message)
+      }
       // await execShPromise(`echo ${tag} | clip`)
     })
     .catch((err) => {
@@ -209,10 +219,10 @@ async function deploy() {
 async function publish(options) {
   return new Promise((resolve, reject) => {
     const publishOptions = {
-      branch: 'build',
+      branch: deployOptions.build,
       ...options,
     }
-    ghpages.publish('production', publishOptions, (err) => {
+    ghpages.publish(deployOptions.target, publishOptions, (err) => {
       if (err === undefined) {
         resolve()
       }
