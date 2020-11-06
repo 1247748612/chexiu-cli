@@ -8,15 +8,19 @@ program
   .helpOption('-h --help', '显示帮助信息')
   .description('可使用的命令')
   .command('deploy [options]', '部署公司项目', {
-    executableFile: './pm-deploy.js',
+    executableFile: './pm-publisher.js',
   })
+  .command('create [projectName]', '创建项目', {
+    executableFile: './pm-create.js',
+  })
+  .alias('D')
+  .command('create [projectName]', '创建项目')
+  .alias('C')
   .parse(process.argv)
 
 if (program.dir) {
   process.chdir(program.dir)
 }
-
-console.log('WorkDir:', process.cwd())
 
 // if (program.deploy) {
 //   const { target, dist } = program

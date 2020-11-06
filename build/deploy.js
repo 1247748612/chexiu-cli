@@ -219,7 +219,7 @@ async function deploy(options = {}) {
 async function publish(options) {
   return new Promise((resolve, reject) => {
     const publishOptions = {
-      branch: deployOptions.build,
+      branch: deployOptions.branch,
       ...options,
     }
     ghpages.publish(deployOptions.target, publishOptions, (err) => {
