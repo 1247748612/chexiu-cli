@@ -66,8 +66,9 @@ module.exports = {
         test: /\.s?[ac]ss$/i,
         exclude: /node_modules/,
         use: [
-          MiniCssExtractPlugin.loader,
-          'vue-style-loader',
+          process.env.NODE_ENV !== 'production'
+            ? 'vue-style-loader'
+            : MiniCssExtractPlugin.loader,
           // 将 JS 字符串生成为 style 节点
           // 'style-loader',
           // 将 CSS 转化成 CommonJS 模块
