@@ -1,14 +1,19 @@
 {
   "name": "chexiu-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "这是一个cli",
   "module": "esm",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "chexiu": "node bin/chexiu",
     "start": "npm run chexiu"
   },
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "chexiu",
+    "webpack",
+    "deploy"
+  ],
   "author": "",
   "license": "ISC",
   "bin": {
