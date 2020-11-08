@@ -2,6 +2,7 @@
 
 const program = require('commander')
 const exec = require('exec-sh').promise
+const path = require('path')
 
 program
   .version('1.0.0', '-V --version', '输出版本号')
@@ -22,7 +23,9 @@ program
     create
       .then(async () => {
         console.log('创建成功')
-        await exec(`cd ${dir} && yarn && yarn serve`)
+        await exec(
+          `cd ${path.join(process.cwd(), dir)} && dir && yarn && yarn serve`
+        )
       })
       .catch((err) => {
         console.log('创建项目失败', err)

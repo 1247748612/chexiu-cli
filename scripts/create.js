@@ -29,8 +29,7 @@ module.exports = class Create {
         reject(err)
       }
 
-      const templatePath = path.join(process.argv[1], '../../templates/vue')
-      fs.copy(path.resolve(__dirname, templatePath), this.projectPath)
+      fs.copy(path.resolve(__dirname, '../templates/vue'), this.projectPath)
         .then(() => {
           resolve()
         })
