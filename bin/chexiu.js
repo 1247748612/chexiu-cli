@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander')
+const exec = require('exec-sh').promise
 
 program
   .version('1.0.0', '-V --version', '输出版本号')
@@ -10,14 +11,30 @@ program
   .command('deploy [options]', '部署公司项目', {
     executableFile: '../scripts/pm-publisher.js',
   })
-  .command('create [projectName]', '创建项目', {
-    executableFile: '../scripts/pm-create.js',
-  })
   .alias('D')
-  .command('create [projectName]', '创建项目')
-  .alias('C')
-  .parse(process.argv)
 
-if (program.dir) {
-  process.chdir(program.dir)
-}
+program
+  .command('create <pwd>')
+  .description('创建一个项目')
+  .action((dir, command) => {
+    const Create = require('../scripts/create.js')
+    const create = new Create(dir, process.cwd()).create()
+    create
+      .then(async () => {
+        console.log('创建成功')
+        await exec(`cd ${dir} && yarn && yarn serve`)
+      })
+      .catch((err) => {
+        console.log('创建项目失败', err)
+      })
+  })
+  .alias('C')
+
+program
+  .command('rm <dir>')
+  .option('-r, --recursive', 'Remove recursively')
+  .action(function (dir, cmdObj) {
+    console.log('remove ' + dir + (cmdObj.recursive ? ' recursively' : ''))
+  })
+
+program.parse(process.argv)

@@ -8,7 +8,6 @@ program
   .option('-s --send', '发布钉钉消息')
   .option('-d --dir <WorkDir>', '工作目录')
   .option('--branch <Branch>', '指定上传的branch', 'build')
-  .parse(process.argv)
 
 if (program.dir) {
   process.chdir(program.dir)
