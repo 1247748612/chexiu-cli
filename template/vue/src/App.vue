@@ -1,22 +1,23 @@
 <template>
   <div class="container max-auto px-4">
-    <h1>This is App.vue</h1>
-    <hello-world></hello-world>
-    <preview-image></preview-image>
+    <router-link to="/HelloWorld">
+      跳转hello
+    </router-link>
+    <router-link to="/jsx">
+      jsx
+    </router-link>
+    <router-view />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import HelloWorld from './components/HelloWorld/index.vue'
-import PreviewImage from './components/PreviewImage/index.vue'
 
 @Component({
   components: {
-    HelloWorld,
-    PreviewImage,
-  },
+  }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+}
 </script>
 
 <style>

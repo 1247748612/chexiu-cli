@@ -8,10 +8,10 @@ program
   .helpOption('-h --help', '显示帮助信息')
   .description('可使用的命令')
   .command('deploy [options]', '部署公司项目', {
-    executableFile: './pm-publisher.js',
+    executableFile: '../scripts/pm-publisher.js',
   })
   .command('create [projectName]', '创建项目', {
-    executableFile: './pm-create.js',
+    executableFile: '../scripts/pm-create.js',
   })
   .alias('D')
   .command('create [projectName]', '创建项目')
@@ -21,9 +21,3 @@ program
 if (program.dir) {
   process.chdir(program.dir)
 }
-
-// if (program.deploy) {
-//   const { target, dist } = program
-
-//   deploy({})
-// }

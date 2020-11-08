@@ -1,39 +1,49 @@
-const path = require('path')
+const path = require('path');
 
-const dirname = path.parse(__dirname).dir
-const resolveDirname = (src) => path.resolve(dirname, src)
+const dirname = path.parse(__dirname).dir;
+const envMode = process.env.NODE_ENV !== 'production';
+const resolveDirname = (src) => path.resolve(dirname, src);
 
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+
+
+console.log(resolveDirname('.eslintrc.js'))
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
-    app: resolveDirname('./src/main.ts'),
+    app: {
+      import: resolveDirname('./src/main.ts'),
+      filename: envMode ? '[name].js' : 'static/js/[name].[contenthash].js',
+    },
   },
-  devtool: 'inline-source-map',
   output: {
     publicPath: '/',
-    filename: (pathData) => {
-      return pathData.chunk.name === 'app'
-        ? '[name].js'
-        : 'js/[name].[contenthash].js'
-    },
     path: resolveDirname('./dist'),
+    filename: envMode
+      ? '[name].js'
+      : 'static/js/[name].[contenthash].dynamic.js',
     assetModuleFilename: 'static/images/[hash][ext][query]',
   },
-  devServer: {
-    open: true,
-    contentBase: resolveDirname('./dist'),
-  },
   resolve: {
+    alias: {
+      '@': resolveDirname('src'),
+    },
     // Add `.ts` as a resolvable extension.
     extensions: ['.ts', '.js', '.tsx', '.vue'],
   },
   module: {
     rules: [
+      {
+        enforce: 'pre',
+        test: /\.(ts|js|vue|json)$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -49,6 +59,9 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+        }
       },
       {
         test: /\.ts$/,
@@ -58,33 +71,25 @@ module.exports = {
       },
       {
         test: /\.tsx$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
-        options: { appendTsxSuffixTo: [/\.vue$/] },
-      },
-      {
-        test: /\.s?[ac]ss$/i,
-        exclude: /node_modules/,
         use: [
-          process.env.NODE_ENV !== 'production'
-            ? 'vue-style-loader'
-            : MiniCssExtractPlugin.loader,
-          // 将 JS 字符串生成为 style 节点
-          // 'style-loader',
-          // 将 CSS 转化成 CommonJS 模块
-          'css-loader',
-          // 将 Sass 编译成 CSS
-          'sass-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+            }
+          },
+          {
+            loader: 'ts-loader',
+            options: { appendTsxSuffixTo: [/\.vue$/] },
+          }
         ],
-        generator: {
-          filename: 'static/css/[contenthash].[ext]',
-        },
+        exclude: /node_modules/,
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         type: 'asset/resource',
         generator: {
-          filename: 'static/font/[contenthash].[ext]',
+          filename: 'static/font/[name].[contenthash].[ext]',
         },
       },
       {
@@ -98,39 +103,31 @@ module.exports = {
       },
     ],
   },
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        styles: {
-          name: 'styles',
-          test: /\.s?[ac]ss$/,
-          chunks: 'all',
-          enforce: true,
-        },
-      },
-    },
-  },
+
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: '**/*',
+          context: resolveDirname('public'),
+          globOptions: {
+            ignore: [
+              // Ignore all `txt` files
+              './index.html',
+            ],
+          },
+        },
+      ],
+    }),
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
+      favicon: resolveDirname('./public/favicon.ico'),
       template: resolveDirname('./public/index.html'),
     }),
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: 'static/css/[name].[contenthash].css',
-      chunkFilename: '[id].css',
+    new Dotenv({
+      path: resolveDirname(`.env.${process.env.NODE_ENV}`),
+      defaults: resolveDirname(`.env`),
     }),
   ],
-  // optimization: {
-  //   moduleIds: 'hashed',
-  //   splitChunks: {
-  //     cacheGroups: {
-  //       vendor: {
-  //         test: /[\\/]node_modules[\\/]/,
-  //         name: 'vendors',
-  //         chunks: 'all',
-  //       },
-  //     },
-  //   },
-  // },
-}
+};
