@@ -1,15 +1,18 @@
 {
   "name": "vue",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.0",
+  "description": "这是一个由webpack5打包的vue项目",
   "scripts": {
     "lint": "eslint --fix --ext .tsx,.ts,.js,.vue,.json src/",
     "build": "cross-env NODE_ENV=production webpack --config ./config/webpack.config.js",
     "serve": "cross-env NODE_ENV=development webpack serve --config ./config/webpack.config.js",
     "postinstall": "husky install"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "vue",
+    "webpack5"
+  ],
+  "author": "dengqing",
   "license": "ISC",
   "dependencies": {
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
