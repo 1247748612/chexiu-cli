@@ -24,7 +24,10 @@ program
       .then(async () => {
         console.log('创建成功')
         await exec(
-          `cd ${path.join(process.cwd(), dir)} && dir && yarn && yarn serve`
+          `cd ${path.join(
+            process.cwd(),
+            dir
+          )} && npm run install && npm run serve`
         )
       })
       .catch((err) => {
