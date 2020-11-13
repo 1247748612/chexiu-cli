@@ -14,12 +14,21 @@ program
   })
   .alias('D')
 
+const options = {
+  templateName: 'vue',
+  src: process.cwd()
+}
+
 program
   .command('create <pwd>')
+  .option('--js', '使用js版本')
   .description('创建一个项目')
   .action((dir, command) => {
+    if (command.js) {
+      options.templateName = 'vue-js'
+    }
     const Create = require('../scripts/create.js')
-    const create = new Create(dir, process.cwd()).create()
+    const create = new Create(dir, options).create()
     create
       .then(async () => {
         console.log('创建成功')
@@ -36,11 +45,11 @@ program
   })
   .alias('C')
 
-program
-  .command('rm <dir>')
-  .option('-r, --recursive', 'Remove recursively')
-  .action(function (dir, cmdObj) {
-    console.log('remove ' + dir + (cmdObj.recursive ? ' recursively' : ''))
-  })
+// program
+//   .command('rm <dir>')
+//   .option('-r, --recursive', 'Remove recursively')
+//   .action(function (dir, cmdObj) {
+//     console.log('remove ' + dir + (cmdObj.recursive ? ' recursively' : ''))
+//   })
 
 program.parse(process.argv)
