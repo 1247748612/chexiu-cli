@@ -1,0 +1,7 @@
+node_module
+config/**/*
+dist/**/*
+public/**/*
+postcss.config.js
+src/assets/*
+.history
