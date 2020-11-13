@@ -23,9 +23,7 @@
     "chexiu": "./bin/chexiu.js"
   },
   "devDependencies": {
-    "commander": "^6.2.0"
-  },
-  "dependencies": {
+    "commander": "^6.2.0",
     "fs-extra": "^9.0.1",
     "gh-pages": "^3.1.0",
     "axios": "^0.21.0",
