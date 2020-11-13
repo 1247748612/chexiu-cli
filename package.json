@@ -1,6 +1,6 @@
 {
   "name": "chexiu-cli",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "这是一个cli",
   "module": "esm",
   "scripts": {
