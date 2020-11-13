@@ -27,7 +27,7 @@ program
           `cd ${path.join(
             process.cwd(),
             dir
-          )} && npm run install && npm run serve`
+          )} && git init && npm install && npm run serve`
         )
       })
       .catch((err) => {

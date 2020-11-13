@@ -1,32 +1,36 @@
 {
   "name": "chexiu-cli",
-  "version": "1.0.1",
+  "version": "1.0.8",
   "description": "这是一个cli",
   "module": "esm",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "chexiu": "node bin/chexiu",
     "start": "npm run chexiu"
   },
+  "main": "./scripts/create.js",
   "keywords": [
     "cli",
     "chexiu",
     "webpack",
     "deploy"
   ],
-  "author": "",
+  "author": {
+    "name": "dengqing",
+    "email": "dengqing0821@gmail.com"
+  },
   "license": "ISC",
   "bin": {
     "chexiu": "./bin/chexiu.js"
   },
   "devDependencies": {
-    "axios": "^0.21.0",
-    "commander": "^6.2.0",
-    "exec-sh": "^0.3.4",
+    "commander": "^6.2.0"
+  },
+  "dependencies": {
     "fs-extra": "^9.0.1",
     "gh-pages": "^3.1.0",
+    "axios": "^0.21.0",
+    "exec-sh": "^0.3.4",
     "inquirer": "^7.3.3",
     "rimraf": "^3.0.2"
-  },
-  "dependencies": {}
+  }
 }
