@@ -113,7 +113,7 @@ module.exports = {
           globOptions: {
             ignore: [
               // Ignore all `txt` files
-              './index.html',
+              '**/index.ejs',
             ],
           },
         },
@@ -122,7 +122,7 @@ module.exports = {
     new VueLoaderPlugin(),
     new HtmlWebpackPlugin({
       favicon: resolveDirname('./public/favicon.ico'),
-      template: resolveDirname('./public/index.html'),
+      template: resolveDirname('./public/index.ejs'),
     }),
     new CleanWebpackPlugin(),
     new Dotenv({
