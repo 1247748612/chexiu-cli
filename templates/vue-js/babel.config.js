@@ -7,7 +7,7 @@ module.exports = {
           version: 3,
           proposals: true,
         },
-        useBuiltIns: "entry",
+        useBuiltIns: "usage",
       },
     ],
     "@vue/babel-preset-jsx",
